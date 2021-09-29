@@ -17,7 +17,7 @@ count_dictionary = {}
 for x in range(200):
     count_dictionary[x] = 0
 
-for element in range(sensor_count):
+for element in range(25):
     count = 0
     sensor_fields = df.iloc[element]['fields']
     sensor_location = df.iloc[element]['grid']

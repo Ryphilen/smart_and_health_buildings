@@ -1,0 +1,15 @@
+../.DS_Store
+.DS_Store
+.env
+__pycache__/
+book_with_grids.csv
+cache/
+env/
+example.py
+example2.py
+grid_divide.py
+img/
+influxdb_interface.py
+lll-book/
+requirements.txt
+utility.py
