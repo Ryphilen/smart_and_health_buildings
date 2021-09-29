@@ -17,7 +17,7 @@ count_dictionary = {}
 for x in range(200):
     count_dictionary[x] = 0
 
-for element in range(25):
+for element in range(sensor_count):
     count = 0
     sensor_fields = df.iloc[element]['fields']
     sensor_location = df.iloc[element]['grid']
@@ -26,8 +26,11 @@ for element in range(25):
         if (fieldname in sensor_fields):
             fields_in_sensor.append(fieldname)
     for fieldname in fields_in_sensor:
-        function_ldf = list(util.get_lfdf(fieldname, s, e, list(df[df['grid']==sensor_location]['device_id']))['value'])
-        count += len(function_ldf)
+        try:
+            function_ldf = list(util.get_lfdf(fieldname, s, e, list(df[df['grid']==sensor_location]['device_id']))['value'])
+            count += len(function_ldf)
+        except TypeError:
+            count += 0
     count_dictionary[sensor_location] += count
 
 print(count_dictionary)
