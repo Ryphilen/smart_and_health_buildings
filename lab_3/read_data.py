@@ -1,22 +1,33 @@
 import pandas as pd
 import utility as util
 from datetime import datetime
+import numpy as np
 
 df = pd.read_csv("book_with_grids.csv")
 
-temp_data = df[df['type'] == 'temp_humid']
-
-sensor_datas = list(temp_data['fields'])[0]
-
-humidity_key = sensor_datas.split(',')[1]
+sensor_count = len(df)
 
 s= datetime(2021,1,1) # start datetime
-e= datetime(2021,9,20) # end datetime
+e= datetime(2021,9,23) # end datetime
 
-ldf = list(util.get_lfdf(humidity_key, s, e, list(df[df['grid']==197]['device_id']))['value'])
+fields=['Illumination_lx', "Range select"]
 
-print(ldf)
+#Create a dictionary that keeps track of the counts for all grid areas (0-199)
+count_dictionary = {}
+for x in range(200):
+    count_dictionary[x] = 0
 
-def generate_linklab_heatmap(start_datetime, end_datetime, fields, export_filepath):
+for element in range(sensor_count):
+    count = 0
+    sensor_fields = df.iloc[element]['fields']
+    sensor_location = df.iloc[element]['grid']
+    fields_in_sensor = []
+    for fieldname in fields:
+        if (fieldname in sensor_fields):
+            fields_in_sensor.append(fieldname)
+    for fieldname in fields_in_sensor:
+        function_ldf = list(util.get_lfdf(fieldname, s, e, list(df[df['grid']==sensor_location]['device_id']))['value'])
+        count += len(function_ldf)
+    count_dictionary[sensor_location] += count
 
-    return None
+print(count_dictionary)
